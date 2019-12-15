@@ -1,0 +1,6 @@
+present:
+  create:
+    noName: "没有这个名称的礼包"
+    error: "礼包创建错误，请查看后台详细报错"
+
+reload: "重载完成"

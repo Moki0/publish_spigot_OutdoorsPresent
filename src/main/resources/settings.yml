@@ -1,0 +1,48 @@
+# 宝箱设定
+present:
+  # 宝箱名称
+  sdj:
+    # 头颅皮肤 (http://textures.minecraft.net/texture/上的url)
+    skin: 6cef9aa14e884773eac134a4ee8972063f466de678363cf7b1a21a85b7
+    # 显示名
+    displayName: "&b&l&k|&r &d圣诞宝箱 &b&l&k|"
+    # 全息相关
+    hologram:
+      # 全息Y轴位置
+      addY: 1.1
+    # 内容
+    # SoulItem物品,数量,概率
+    items:
+      - "soulitem: test,10,1/10"
+      - "stone,10,1/10"
+    # 打开宝箱时播放效果
+    # 播放效果
+    play:
+      - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
+      - "firework: 1"
+      - "delay: 500"
+      - "firework: 1"
+    # 随机生成
+    spawn:
+      # 生成的世界
+      worlds:
+        - world
+      # 生成概率
+      odds: 1/100
+    # 更新相关设定
+    update:
+      interval: 40
+      play:
+        - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
+    # 生命系统
+    livning:
+      # 最大生命
+      maxHealth: 50
+      # 受伤时的处理
+      damage:
+        # 被攻击的武器耐久减少的值
+        itemDurability: 10
+        # 播放效果
+        play:
+          - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
+          - "particle: VILLAGER_HAPPY,50,0.4,0.6,0.4,0.4"
