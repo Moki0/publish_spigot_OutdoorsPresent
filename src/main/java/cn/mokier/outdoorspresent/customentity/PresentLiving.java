@@ -68,7 +68,7 @@ public class PresentLiving extends EntityShulker {
             if (meta != null) {
                 Damageable damageable = (Damageable) meta;
 
-                damageable.setDamage(damageable.getDamage() - present.getSet().getLivningDamageItemDurability());
+                damageable.setDamage(damageable.getDamage() + present.getSet().getLivningDamageItemDurability());
                 itemStack.setItemMeta(meta);
             }
         }

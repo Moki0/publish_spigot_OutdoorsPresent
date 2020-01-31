@@ -4,6 +4,7 @@ import cn.mokier.outdoorspresent.chat.Chat;
 import cn.mokier.outdoorspresent.customentity.PresentLiving;
 import cn.mokier.outdoorspresent.utils.MsgUtils;
 import lombok.Getter;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -96,6 +97,11 @@ public class PresentOper {
             return;
         }
 
+        //这个位置已经有礼包则不再生成
+        if(getPresent(location) != null) {
+            return;
+        }
+
         // 生成礼包
         try {
             Present present = new Present(location, set);
@@ -123,7 +129,6 @@ public class PresentOper {
             Present present = new Present(location, set);
             presents.add(present);
 
-            System.out.println("生成");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,6 +157,22 @@ public class PresentOper {
         }
 
         presents = new ArrayList<>();
+    }
+    /**
+     * 删除一个区块的所有礼包
+     */
+    public static void removeAll(Chunk chunk) {
+        List<Present> list = new ArrayList<>();
+        for (Present present : presents) {
+            if(present.getLocation().getChunk().equals(chunk)) {
+                list.add(present);
+            }
+        }
+
+        for(Present present : list) {
+            present.remove();
+            presents.remove(present);
+        }
     }
 
     /**

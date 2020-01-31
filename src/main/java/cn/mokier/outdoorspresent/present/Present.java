@@ -14,8 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.Skull;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -33,6 +31,7 @@ public class Present {
     private Hologram hologram;
     private List<ItemStack> items;
 
+    @Getter
     private PresentLiving living;
 
     private BukkitTask task;
@@ -62,6 +61,11 @@ public class Present {
     public void update() {
         // 播放效果
         new Play(location, set.getUpdatePlay());
+
+        // 实体消失删除礼包
+        if(living == null || living.dead) {
+            PresentOper.remove(this);
+        }
     }
 
     /**

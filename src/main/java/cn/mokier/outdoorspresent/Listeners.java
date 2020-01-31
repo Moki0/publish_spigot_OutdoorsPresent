@@ -2,19 +2,27 @@ package cn.mokier.outdoorspresent;
 
 import cn.mokier.outdoorspresent.present.Present;
 import cn.mokier.outdoorspresent.present.PresentOper;
+import cn.mokier.outdoorspresent.utils.WorldUtils;
 import io.izzel.taboolib.module.inject.TListener;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Shulker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-import java.util.Iterator;
+import javax.swing.*;
+
 
 @TListener
 public class Listeners implements Listener {
@@ -32,17 +40,23 @@ public class Listeners implements Listener {
                 for(int y=60; y<100; y++) {
                     Block block = chunk.getBlock(x, y, z);
 
-                    if(block.getType() != Material.GRASS_BLOCK) {
+                    if(block.getType() != Material.GRASS_BLOCK && block.getType() != Material.SAND) {
                         continue;
                     }
                     block = block.getLocation().add(0, 1, 0).getBlock();
                     Material type = block.getType();
+                    Location location = block.getLocation();
 
                     if(type != Material.AIR && type != Material.GRASS) {
                         continue;
                     }
 
-                    PresentOper.create(block.getLocation());
+                    // 判断是否有实体
+                    if(location.getWorld().getNearbyEntities(location, 0.5, 0.5, 0.5).size() > 0) {
+                        return;
+                    }
+
+                    PresentOper.create(location);
                     return;
                 }
             }
@@ -58,16 +72,7 @@ public class Listeners implements Listener {
     public void onChunkUnLoad(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
 
-
-        Iterator<Present> iterator = PresentOper.getPresents().iterator();
-        while (iterator.hasNext()) {
-            Present present = iterator.next();
-
-            if(present.getLocation().getChunk().equals(chunk)) {
-                iterator.remove();
-                present.remove();
-            }
-        }
+        PresentOper.removeAll(chunk);
     }
 
     @EventHandler
@@ -77,7 +82,6 @@ public class Listeners implements Listener {
         if(present != null) {
             event.setCancelled(true);
         }
-
     }
 
     /**
@@ -89,7 +93,49 @@ public class Listeners implements Listener {
         Present present = PresentOper.getPresent(event.getBlock().getLocation());
 
         if(present != null) {
+            // 删除礼包
+            present.remove();
+            System.out.println("§c礼包插件出现错误");
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * 预防倒水刷头颅方块
+     * @param event
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockBuild(PlayerBucketEmptyEvent event) {
+        Location location = event.getBlockClicked().getLocation();
+        for(Entity entity : location.getWorld().getNearbyEntities(location, 1.1, 1.1, 1.1)) {
+            if(entity instanceof Shulker) {
+                Present present = PresentOper.getPresent(entity);
+
+                if(present != null) {
+                    PresentOper.remove(present);
+                }
+            }
+        }
+    }
+
+    /**
+     * 预防出现bug的时候礼包实体和方块没删除的保护
+     * @param event
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDamager(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+
+        if(entity instanceof Shulker) {
+            Block block = entity.getLocation().getBlock();
+
+            if(PresentOper.getPresent(block.getLocation()) != null) {
+                return;
+            }
+
+            if(block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD) {
+                block.setType(Material.AIR);
+            }
         }
     }
 
@@ -137,7 +183,5 @@ public class Listeners implements Listener {
             }
         }
     }
-
-    // 删除非法物品
 
 }

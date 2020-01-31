@@ -160,7 +160,7 @@ public class MsgUtils {
         Integer odds = Integer.parseInt(msg.split("/")[0]);
         Integer maxOdds = Integer.parseInt(msg.split("/")[1]);
 
-        Integer ran = (int)(odds+Math.random()*(maxOdds-odds+1));
+        Integer ran = (int)(0+Math.random()*(maxOdds-0+1));
 
         return ran <= odds;
     }

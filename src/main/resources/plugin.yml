@@ -2,3 +2,4 @@ name: OutdoorsPresent
 version: ${project.version}
 main: cn.mokier.outdoorspresent.OutdoorsPresent
 api-version: 1.14
+

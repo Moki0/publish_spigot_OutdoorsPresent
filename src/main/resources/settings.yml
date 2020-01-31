@@ -28,7 +28,7 @@ present:
       worlds:
         - world
       # 生成概率
-      odds: 1/100
+      odds: 1/500
     # 更新相关设定
     update:
       interval: 40
