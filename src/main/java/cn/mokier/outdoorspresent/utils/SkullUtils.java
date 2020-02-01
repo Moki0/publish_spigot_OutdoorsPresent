@@ -19,51 +19,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class SkullUtils {
-
-    public static ItemStack getSkullByID(String id) {
-        ItemStack skull= new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-
-        skullMeta.setOwner(id);
-        skull.setItemMeta(skullMeta);
-
-        return skull;
-    }
-
-    /**
-     * 通过url获得头颅
-     * @param url http://textures.minecraft.net/texture/上的url
-     * @return
-     */
-    public static ItemStack getSkullByURL(String url) {
-        url = "http://textures.minecraft.net/texture/"+url;
-
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
-        ItemMeta skullMeta = skull.getItemMeta();
-
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
-        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
-        Field profileField = null;
-
-        try {
-            profileField = skullMeta.getClass().getDeclaredField("profile");
-        } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-        }
-
-        profileField.setAccessible(true);
-
-        try {
-            profileField.set(skullMeta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        skull.setItemMeta(skullMeta);
-        return skull;
-    }
-
     /**
      * 设置方块成头颅皮肤
      * @param block 方块
@@ -85,35 +40,6 @@ public class SkullUtils {
         profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
 
         skullTile.setGameProfile(profile);
-    }
-
-    /**
-     * 判断方块头颅是否是制定皮肤
-     * @param block 方块
-     * @param url http://textures.minecraft.net/texture/上的url
-     * @return
-     */
-    public static boolean isSkullCorrect(Block block, String url){
-        Skull skull = (Skull) block.getState();
-        TileEntitySkull skullTile = (TileEntitySkull) ((CraftWorld)skull.getWorld()).getHandle().getTileEntity(new BlockPosition(skull.getX(), skull.getY(), skull.getZ()));
-        GameProfile profile = skullTile.gameProfile;
-        Collection<Property> textures = profile.getProperties().get("textures");
-        String text = "";
-
-        for (Property texture : textures) {
-            text = texture.getValue();
-        }
-
-        skullTile.setGameProfile(profile);
-
-
-        String decoded = Base64Coder.decodeString(text);
-        String textureNumber = decoded.replace("{textures:{SKIN:{url:\"", "").replace("\"}}}", "").replace("http://textures.minecraft.net/texture/", "").trim();
-
-        if(url.equalsIgnoreCase(textureNumber)){
-            return true;
-        }
-        return false;
     }
 
 }

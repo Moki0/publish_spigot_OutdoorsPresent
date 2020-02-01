@@ -46,7 +46,7 @@ public class PresentSet {
      * @return
      */
     public boolean spawnOdds() {
-        return MsgUtils.odds(spawnOdds);
+        return MsgUtils.chance(spawnOdds);
     }
 
     /**
@@ -66,7 +66,7 @@ public class PresentSet {
                     Integer amount = Integer.parseInt(split[1]);
                     String odds = split[2];
 
-                    if(MsgUtils.odds(odds)) {
+                    if(MsgUtils.chance(odds)) {
                         SItem sItem = SoulItemAPI.getSItem(id);
                         ItemStack itemStack = sItem.getItemStack();
                         itemStack.setAmount(amount);
@@ -78,7 +78,7 @@ public class PresentSet {
                     Integer amount = Integer.parseInt(split[1]);
                     String odds = split[2];
 
-                    if(MsgUtils.odds(odds)) {
+                    if(MsgUtils.chance(odds)) {
                         ItemStack itemStack = new ItemStack(Material.matchMaterial(id), amount);
                         list.add(itemStack);
                     }

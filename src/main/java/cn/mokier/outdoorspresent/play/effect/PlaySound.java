@@ -3,6 +3,9 @@ package cn.mokier.outdoorspresent.play.effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 
+/**
+ * 播放环境声音
+ */
 public class PlaySound extends BasePlay {
 
     public PlaySound(String line) {

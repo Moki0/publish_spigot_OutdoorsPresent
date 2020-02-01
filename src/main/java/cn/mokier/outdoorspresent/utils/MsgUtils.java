@@ -1,5 +1,6 @@
 package cn.mokier.outdoorspresent.utils;
 
+import lombok.NonNull;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -84,7 +85,9 @@ public class MsgUtils {
         if(values != null) {
             if(values.length % 2 == 0) {
                 for(int i = 0;i < values.length;) {
-                    str = str.replace(values[i], values[i + 1]);
+                    String val1 = values[i];
+                    String val2 = values[i + 1] == null ? "null" : values[i + 1];
+                    str = str.replace(val1, val2);
                     i += 2;
                     if(i >= values.length) {
                         break;
@@ -156,13 +159,24 @@ public class MsgUtils {
      * @param msg
      * @return
      */
-    public static boolean odds(String msg) {
-        Integer odds = Integer.parseInt(msg.split("/")[0]);
-        Integer maxOdds = Integer.parseInt(msg.split("/")[1]);
+    public static boolean chance(@NonNull String msg) {
+        Integer chance = Integer.parseInt(msg.split("/")[0]);
+        Integer maxChance = Integer.parseInt(msg.split("/")[1]);
 
-        Integer ran = (int)(0+Math.random()*(maxOdds-0+1));
+        double ran = Math.random() * maxChance;
 
-        return ran <= odds;
+        return ran <= chance;
+    }
+
+    /**
+     * 获得随机数
+     * @param min 最小
+     * @param max 最大
+     * @return
+     */
+    public static Integer chance(@NonNull Integer min, @NonNull Integer max) {
+
+        return (int)(min+Math.random()*(max-min+1));
     }
 
 }

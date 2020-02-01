@@ -3,6 +3,9 @@ package cn.mokier.outdoorspresent.play.effect;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 
+/**
+ * 播放粒子
+ */
 public class PlayParticle extends BasePlay {
 
     public PlayParticle(String line) {

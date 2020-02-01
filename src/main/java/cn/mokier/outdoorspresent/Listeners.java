@@ -2,7 +2,6 @@ package cn.mokier.outdoorspresent;
 
 import cn.mokier.outdoorspresent.present.Present;
 import cn.mokier.outdoorspresent.present.PresentOper;
-import cn.mokier.outdoorspresent.utils.WorldUtils;
 import io.izzel.taboolib.module.inject.TListener;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -16,16 +15,36 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-
-import javax.swing.*;
 
 
 @TListener
 public class Listeners implements Listener {
+
+    @EventHandler
+    public void onPresentDeath(EntityDeathEvent event) {
+        Present present = PresentOper.getPresent(event.getEntity());
+
+        if(present == null) {
+            return;
+        }
+
+        present.onEntityDeathEvent(event);
+    }
+
+    @EventHandler
+    public void onPresentDamage(EntityDamageByEntityEvent event) {
+        Present present = PresentOper.getPresent(event.getEntity());
+
+        if(present == null) {
+            return;
+        }
+
+        present.onEntityDamageEvent(event);
+    }
 
     /**
      * 区块加载时生成礼包
@@ -95,7 +114,6 @@ public class Listeners implements Listener {
         if(present != null) {
             // 删除礼包
             present.remove();
-            System.out.println("§c礼包插件出现错误");
             event.setCancelled(true);
         }
     }

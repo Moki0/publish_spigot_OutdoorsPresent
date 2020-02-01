@@ -14,7 +14,7 @@ public class SendSoundAll extends BaseSend {
     @Override
     public void onExecute(CommandSender sender) throws Exception {
         try {
-            String type = vars.get(0).toUpperCase();
+            Sound type = Sound.valueOf(vars.get(0).toUpperCase());
             Integer volume = vars.size() > 1 ? Integer.parseInt(vars.get(1)) : 1;
             Integer pitch = vars.size() > 2 ? Integer.parseInt(vars.get(2)) : 0;
 

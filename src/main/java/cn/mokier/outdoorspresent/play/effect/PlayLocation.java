@@ -2,6 +2,9 @@ package cn.mokier.outdoorspresent.play.effect;
 
 import org.bukkit.Location;
 
+/**
+ * 位置偏移
+ */
 public class PlayLocation extends BasePlay {
 
     public PlayLocation(String line) {

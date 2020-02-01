@@ -2,8 +2,6 @@ package cn.mokier.outdoorspresent;
 
 import cn.mokier.outdoorspresent.chat.Chat;
 import cn.mokier.outdoorspresent.chat.Lang;
-import cn.mokier.outdoorspresent.customentity.EntityLoader;
-import cn.mokier.outdoorspresent.customentity.PresentLiving;
 import cn.mokier.outdoorspresent.present.PresentOper;
 import io.izzel.taboolib.module.config.TConfig;
 import io.izzel.taboolib.module.config.TConfigWatcher;
@@ -11,10 +9,7 @@ import io.izzel.taboolib.module.inject.TInject;
 import io.izzel.taboolib.module.inject.TListener;
 import lombok.Getter;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 @TListener
 public final class OutdoorsPresent extends Plugin implements Listener {
@@ -32,11 +27,6 @@ public final class OutdoorsPresent extends Plugin implements Listener {
         Lang.load(lang);
 
         TConfigWatcher.getInst().addSimpleListener(lang.getFile(), () -> Lang.load(lang));
-    }
-
-    @Override
-    public void onLoading() {
-        EntityLoader.load();
     }
 
     @Override

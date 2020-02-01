@@ -16,7 +16,7 @@ public class SendSound extends BaseSend {
             Player player = (Player) sender;
 
             try {
-                String type = vars.get(0).toUpperCase();
+                Sound type = Sound.valueOf(vars.get(0).toUpperCase());
                 Integer volume = vars.size() > 1 ? Integer.parseInt(vars.get(1)) : 1;
                 Integer pitch = vars.size() > 2 ? Integer.parseInt(vars.get(2)) : 0;
 

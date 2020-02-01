@@ -13,7 +13,6 @@ present:
     # 内容
     # SoulItem物品,数量,概率
     items:
-      - "soulitem: test,10,1/10"
       - "stone,10,1/10"
     # 打开宝箱时播放效果
     # 播放效果

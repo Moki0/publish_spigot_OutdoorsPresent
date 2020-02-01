@@ -7,6 +7,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+/**
+ * 播放烟花
+ */
 public class PlayFirework extends BasePlay {
 
     public PlayFirework(String line) {

@@ -1,7 +1,6 @@
 package cn.mokier.outdoorspresent.present;
 
 import cn.mokier.outdoorspresent.chat.Chat;
-import cn.mokier.outdoorspresent.customentity.PresentLiving;
 import cn.mokier.outdoorspresent.utils.MsgUtils;
 import lombok.Getter;
 import org.bukkit.Chunk;
@@ -9,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -69,13 +67,8 @@ public class PresentOper {
      * @return
      */
     public static Present getPresent(Entity entity) {
-        CraftEntity craftEntity = (CraftEntity) entity;
-        if(!(craftEntity.getHandle() instanceof PresentLiving)) {
-            return null;
-        }
-
         for(Present present : presents) {
-            if(present.equalsEntity(craftEntity.getHandle())) {
+            if(present.equalsEntity(entity)) {
                 return present;
             }
         }

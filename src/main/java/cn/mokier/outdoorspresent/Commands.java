@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 @BaseCommand(name = "outdoorspresent", aliases = {"present"})
 public class Commands extends BaseMainCommand {
 
@@ -25,6 +26,7 @@ public class Commands extends BaseMainCommand {
 
             PresentOper.create(location, name, sender);
         }
+
     };
 
     @SubCommand(description = "重新加载配置文件", permission = "outdoorspresent.reload")

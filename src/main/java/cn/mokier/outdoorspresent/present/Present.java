@@ -1,20 +1,28 @@
 package cn.mokier.outdoorspresent.present;
 
 import cn.mokier.outdoorspresent.OutdoorsPresent;
-import cn.mokier.outdoorspresent.customentity.PresentLiving;
 import cn.mokier.outdoorspresent.play.Play;
 import cn.mokier.outdoorspresent.utils.SkullUtils;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lombok.Getter;
 import lombok.ToString;
-import net.minecraft.server.v1_14_R1.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -32,7 +40,7 @@ public class Present {
     private List<ItemStack> items;
 
     @Getter
-    private PresentLiving living;
+    private Shulker living;
 
     private BukkitTask task;
 
@@ -52,7 +60,7 @@ public class Present {
         items = set.oddsItems();
 
         // 创建实体
-        living = set.hasLivning() ? PresentLiving.spawnEntity(this, location) : null;
+        living = set.hasLivning() ? spawnLiving(location) : null;
 
         // 创建更新线程
         task = set.hasUpdate() ? Bukkit.getScheduler().runTaskTimer(OutdoorsPresent.getPlugin(), () -> update(), set.getUpdateInterval(), set.getUpdateInterval()) : null;
@@ -63,7 +71,7 @@ public class Present {
         new Play(location, set.getUpdatePlay());
 
         // 实体消失删除礼包
-        if(living == null || living.dead) {
+        if(living == null || living.isDead()) {
             PresentOper.remove(this);
         }
     }
@@ -93,7 +101,7 @@ public class Present {
         hologram.delete();
 
         if(living != null) {
-            living.die();
+            living.remove();
         }
 
         if(task != null) {
@@ -127,6 +135,55 @@ public class Present {
             return false;
         }
         return living.equals(entity);
+    }
+
+    /**
+     * 实体被攻击
+     */
+    public void onEntityDeathEvent(EntityDeathEvent event) {
+        open();
+    }
+
+    /**
+     * 实体死亡
+     */
+    public void onEntityDamageEvent(EntityDamageByEntityEvent event) {
+        // 播放效果
+        new Play(location, set.getLivningDamagePlay());
+
+        // 武器耐久倍减
+        if(event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            ItemMeta meta = itemStack.getItemMeta();
+
+            if (meta != null) {
+                Damageable damageable = (Damageable) meta;
+
+                damageable.setDamage(damageable.getDamage() + set.getLivningDamageItemDurability());
+                itemStack.setItemMeta(meta);
+            }
+        }
+    }
+
+    /**
+     * 生成宝箱实体
+     * @param location
+     * @return
+     */
+    public Shulker spawnLiving(Location location) {
+        Shulker living = (Shulker) location.getWorld().spawnEntity(location, EntityType.SHULKER);
+
+        living.setAI(false);
+
+        PotionEffect effect = new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false);
+        living.addPotionEffect(effect);
+
+        Double health = set.getLivningMaxHealth();
+        living.setMaxHealth(health);
+        living.setHealth(health);
+
+        return living;
     }
 
 }
