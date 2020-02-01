@@ -27,7 +27,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 
-@ToString
 public class Present {
 
     @Getter
