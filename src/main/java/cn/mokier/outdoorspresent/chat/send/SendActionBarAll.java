@@ -15,11 +15,8 @@ public class SendActionBarAll extends BaseSend {
     @Override
     public void onExecute(CommandSender sender) throws Exception {
         try {
-            // 添加效果
-            String msg = "§d§k§l| §r" + vars.get(0) + " §d§k§l|";
-
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(msg));
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(vars.get(0)));
             }
         } catch (Exception e) {
             throw new Exception("格式错误，正确格式  actionbarAll: 信息 ");

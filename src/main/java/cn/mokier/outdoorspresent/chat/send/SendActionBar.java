@@ -16,11 +16,8 @@ public class SendActionBar extends BaseSend {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            // 添加效果
-            String msg = "§d§k§l| §r" + vars.get(0) + " §d§k§l|";
-
             try {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(msg));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(vars.get(0)));
             } catch (Exception e) {
                 throw new Exception("格式错误，正确格式  actionbar: 信息 ");
             }
