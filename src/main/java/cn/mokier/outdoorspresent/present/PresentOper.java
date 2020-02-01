@@ -214,18 +214,19 @@ public class PresentOper {
     private static PresentSet getPresentSet(ConfigurationSection section) {
         String displayName = MsgUtils.filterVar(section.getString("displayName"));
         String skin = section.getString("skin");
-        List<String> play = section.getStringList("play");
+        List<String> play = section.getStringList("plays");
+        List<String> sends = section.getStringList("sends");
         Integer updateInterval = section.getInt("update.interval");
-        List<String> updatePlay = section.getStringList("update.play");
+        List<String> updatePlay = section.getStringList("update.plays");
         Double hologramAddY = section.getDouble("hologram.addY");
         Double linvingMaxHealth = section.getDouble("livning.maxHealth");
         Integer livningDamageItemDurability = section.getInt("livning.damage.itemDurability");
-        List<String> livningDamagePlay = section.getStringList("livning.damage.play");
+        List<String> livningDamagePlay = section.getStringList("livning.damage.plays");
         List<String> spawnWorlds = section.getStringList("spawn.worlds");
         String spawnOdds = section.getString("spawn.odds");
         List<String> items = section.getStringList("items");
 
-        PresentSet set = new PresentSet(section.getName(), displayName, skin, play, updateInterval, updatePlay, hologramAddY, linvingMaxHealth, livningDamageItemDurability, livningDamagePlay, spawnWorlds, spawnOdds, items);
+        PresentSet set = new PresentSet(section.getName(), displayName, skin, play, sends, updateInterval, updatePlay, hologramAddY, linvingMaxHealth, livningDamageItemDurability, livningDamagePlay, spawnWorlds, spawnOdds, items);
         return set;
     }
 

@@ -20,13 +20,14 @@ public class PresentSet {
     private String name;
     private String displayName;
     private String skin;
-    private List<String> play;
+    private List<String> plays;
+    private List<String> sends;
     private Integer updateInterval;
-    private List<String> updatePlay;
+    private List<String> updatePlays;
     private Double hologramAddY;
     private Double livningMaxHealth;
     private Integer livningDamageItemDurability;
-    private List<String> livningDamagePlay;
+    private List<String> livningDamagePlays;
     private List<String> spawnWorlds;
     private String spawnOdds;
 

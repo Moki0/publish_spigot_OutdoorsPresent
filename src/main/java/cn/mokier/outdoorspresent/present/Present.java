@@ -1,6 +1,7 @@
 package cn.mokier.outdoorspresent.present;
 
 import cn.mokier.outdoorspresent.OutdoorsPresent;
+import cn.mokier.outdoorspresent.chat.Chat;
 import cn.mokier.outdoorspresent.play.Play;
 import cn.mokier.outdoorspresent.utils.SkullUtils;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -67,7 +68,7 @@ public class Present {
 
     public void update() {
         // 播放效果
-        new Play(location, set.getUpdatePlay());
+        new Play(location, set.getUpdatePlays());
 
         // 实体消失删除礼包
         if(living == null || living.isDead()) {
@@ -78,18 +79,24 @@ public class Present {
     /**
      * 打开礼包
      */
-    public void open() {
+    public void open(Player player) {
         //删除宝箱
         remove();
-
-        // 播放效果
-        new Play(location, set.getPlay());
 
         // 丢物品
         World world = location.getWorld();
         for(ItemStack itemStack : items) {
             world.dropItem(location, itemStack);
         }
+
+        // 发送信息
+        Chat.sendMsg(player, set.getSends(),
+                "{player}", player.getName(),
+                "{name}", set.getDisplayName());
+
+        // 播放效果
+        new Play(location, set.getPlays());
+
     }
 
     /**
@@ -140,7 +147,9 @@ public class Present {
      * 实体被攻击
      */
     public void onEntityDeathEvent(EntityDeathEvent event) {
-        open();
+        Player player = event.getEntity() instanceof Player ? (Player) event.getEntity() : null;
+
+        open(player);
     }
 
     /**
@@ -148,7 +157,7 @@ public class Present {
      */
     public void onEntityDamageEvent(EntityDamageByEntityEvent event) {
         // 播放效果
-        new Play(location, set.getLivningDamagePlay());
+        new Play(location, set.getLivningDamagePlays());
 
         // 武器耐久倍减
         if(event.getDamager() instanceof Player) {

@@ -15,12 +15,14 @@ present:
     items:
       - "stone,10,1/10"
     # 打开宝箱时播放效果
-    # 播放效果
-    play:
+    plays:
       - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
       - "firework: 1"
       - "delay: 500"
       - "firework: 1"
+    # 打开宝箱时发送的信息
+    sends:
+      - "打开了圣诞宝箱"
     # 随机生成
     spawn:
       # 生成的世界
@@ -31,7 +33,7 @@ present:
     # 更新相关设定
     update:
       interval: 40
-      play:
+      plays:
         - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
     # 生命系统
     livning:
@@ -42,6 +44,6 @@ present:
         # 被攻击的武器耐久减少的值
         itemDurability: 10
         # 播放效果
-        play:
+        plays:
           - "sound: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"
           - "particle: VILLAGER_HAPPY,50,0.4,0.6,0.4,0.4"
