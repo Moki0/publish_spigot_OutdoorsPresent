@@ -3,6 +3,7 @@ package cn.mokier.outdoorspresent;
 import cn.mokier.outdoorspresent.present.Present;
 import cn.mokier.outdoorspresent.present.PresentOper;
 import io.izzel.taboolib.module.inject.TListener;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,11 +20,16 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.inventory.ItemStack;
 
 
 @TListener
 public class Listeners implements Listener {
 
+    /**
+     * 宝箱死亡时
+     * @param event
+     */
     @EventHandler
     public void onPresentDeath(EntityDeathEvent event) {
         Present present = PresentOper.getPresent(event.getEntity());
@@ -32,9 +38,20 @@ public class Listeners implements Listener {
             return;
         }
 
+        // 不掉落实体原本物品
+        for(ItemStack item : event.getDrops()) {
+            item.setAmount(0);
+        }
+        // 不掉落经验
+        event.setDroppedExp(0);
+
         present.onEntityDeathEvent(event);
     }
 
+    /**
+     * 宝箱受到攻击时
+     * @param event
+     */
     @EventHandler
     public void onPresentDamage(EntityDamageByEntityEvent event) {
         Present present = PresentOper.getPresent(event.getEntity());
@@ -80,7 +97,6 @@ public class Listeners implements Listener {
                 }
             }
         }
-
     }
 
     /**

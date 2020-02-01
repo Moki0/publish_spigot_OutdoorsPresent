@@ -183,6 +183,8 @@ public class Present {
         living.setMaxHealth(health);
         living.setHealth(health);
 
+        living.setCustomName(" ");
+
         return living;
     }
 
