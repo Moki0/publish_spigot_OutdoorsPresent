@@ -147,7 +147,7 @@ public class Present {
      * 实体被攻击
      */
     public void onEntityDeathEvent(EntityDeathEvent event) {
-        Player player = event.getEntity() instanceof Player ? (Player) event.getEntity() : null;
+        Player player = event.getEntity().getKiller();
 
         open(player);
     }
